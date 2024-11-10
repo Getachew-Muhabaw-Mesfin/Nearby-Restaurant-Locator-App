@@ -1,0 +1,77 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Restaurant {
+  id: Int!
+  name: String!
+  latitude: Float!
+  longitude: Float!
+  address: String!
+  isOpen: Boolean!
+  rating: Float!
+  images: [String!]!
+  services: [Service!]!
+  openingHours: [OpeningHours!]!
+}
+
+type Service {
+  name: String!
+  price: Float!
+}
+
+type OpeningHours {
+  dayOfWeek: String!
+  month: Int
+  year: Int
+  start: String!
+  end: String!
+}
+
+type Query {
+  restaurants(isOpen: Boolean, minRating: Float, maxDistance: Float, userLatitude: Float, userLongitude: Float): [Restaurant!]!
+}
+
+type Mutation {
+  createRestaurant(restaurantData: CreateRestaurantInput!): Restaurant!
+  updateRestaurant(id: Int!, updateRestaurantData: UpdateRestaurantInput!): Restaurant!
+  deleteRestaurant(id: Int!): Boolean!
+}
+
+input CreateRestaurantInput {
+  name: String!
+  latitude: Float!
+  longitude: Float!
+  address: String!
+  openingHours: [OpeningHoursInput!]!
+  isOpen: Boolean! = false
+  rating: Float! = 0
+  images: [String!]!
+  services: [ServiceInput!]!
+}
+
+input OpeningHoursInput {
+  dayOfWeek: String!
+  month: Int
+  year: Int
+  start: String!
+  end: String!
+}
+
+input ServiceInput {
+  name: String!
+  price: Float!
+}
+
+input UpdateRestaurantInput {
+  name: String
+  latitude: Float
+  longitude: Float
+  address: String
+  openingHours: [OpeningHoursInput!]
+  isOpen: Boolean = false
+  rating: Float = 0
+  images: [String!]
+  services: [ServiceInput!]
+  id: ID!
+}

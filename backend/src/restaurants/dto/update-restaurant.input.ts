@@ -1,8 +1,8 @@
 import { CreateRestaurantInput } from './create-restaurant.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field, ID, PartialType } from '@nestjs/graphql';
 
 @InputType()
 export class UpdateRestaurantInput extends PartialType(CreateRestaurantInput) {
-  @Field(() => Int)
+  @Field(() => ID)
   id: number;
 }

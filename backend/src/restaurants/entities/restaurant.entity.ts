@@ -37,11 +37,11 @@ export class Restaurant {
   images: string[];
 
   @Field(() => [Service])
-  @Column('json', { array: true })
+  @Column('jsonb')
   services: Service[];
 
   @Field(() => [OpeningHours])
-  @Column('json', { array: true })
+  @Column('jsonb')
   openingHours: OpeningHours[];
 }
 
@@ -59,10 +59,10 @@ export class OpeningHours {
   @Field()
   dayOfWeek: string;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   month?: number;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   year?: number;
 
   @Field()

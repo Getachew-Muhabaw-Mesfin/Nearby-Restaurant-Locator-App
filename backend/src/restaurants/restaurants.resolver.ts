@@ -10,7 +10,7 @@ export class RestaurantResolver {
 
   @Mutation(() => Restaurant)
   async createRestaurant(
-    @Args('createRestaurantInput') createRestaurantInput: CreateRestaurantInput,
+    @Args('restaurantData') createRestaurantInput: CreateRestaurantInput,
   ): Promise<Restaurant> {
     return this.restaurantService.createRestaurant(createRestaurantInput);
   }
@@ -18,7 +18,7 @@ export class RestaurantResolver {
   @Mutation(() => Restaurant)
   async updateRestaurant(
     @Args('id', { type: () => Int }) id: number,
-    @Args('updateRestaurantInput') updateRestaurantInput: UpdateRestaurantInput,
+    @Args('updateRestaurantData') updateRestaurantInput: UpdateRestaurantInput,
   ): Promise<Restaurant> {
     return this.restaurantService.updateRestaurant(id, updateRestaurantInput);
   }

@@ -1,4 +1,4 @@
-import { InputType, Field, Float } from '@nestjs/graphql';
+import { InputType, Field, Float, Int } from '@nestjs/graphql';
 
 @InputType()
 export class CreateRestaurantInput {
@@ -14,7 +14,7 @@ export class CreateRestaurantInput {
   @Field()
   address: string;
 
-  @Field()
+  @Field(() => [OpeningHoursInput])
   openingHours: OpeningHoursInput[];
 
   @Field(() => Boolean, { defaultValue: false })
@@ -44,10 +44,10 @@ export class OpeningHoursInput {
   @Field()
   dayOfWeek: string;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   month?: number;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   year?: number;
 
   @Field()
