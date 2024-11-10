@@ -1,42 +1,53 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { RestaurantsService } from './restaurants.service';
+import { Resolver, Query, Mutation, Args, Int, Float } from '@nestjs/graphql';
+import { RestaurantService } from './restaurants.service';
 import { Restaurant } from './entities/restaurant.entity';
 import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 
 @Resolver(() => Restaurant)
-export class RestaurantsResolver {
-  constructor(private readonly restaurantsService: RestaurantsService) {}
+export class RestaurantResolver {
+  constructor(private readonly restaurantService: RestaurantService) {}
 
   @Mutation(() => Restaurant)
-  createRestaurant(
+  async createRestaurant(
     @Args('createRestaurantInput') createRestaurantInput: CreateRestaurantInput,
-  ) {
-    return this.restaurantsService.create(createRestaurantInput);
+  ): Promise<Restaurant> {
+    return this.restaurantService.createRestaurant(createRestaurantInput);
+  }
+
+  @Mutation(() => Restaurant)
+  async updateRestaurant(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('updateRestaurantInput') updateRestaurantInput: UpdateRestaurantInput,
+  ): Promise<Restaurant> {
+    return this.restaurantService.updateRestaurant(id, updateRestaurantInput);
+  }
+
+  @Mutation(() => Boolean)
+  async deleteRestaurant(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<boolean> {
+    return this.restaurantService.deleteRestaurant(id);
   }
 
   @Query(() => [Restaurant], { name: 'restaurants' })
-  findAll() {
-    return this.restaurantsService.findAll();
-  }
-
-  @Query(() => Restaurant, { name: 'restaurant' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.restaurantsService.findOne(id);
-  }
-
-  @Mutation(() => Restaurant)
-  updateRestaurant(
-    @Args('updateRestaurantInput') updateRestaurantInput: UpdateRestaurantInput,
-  ) {
-    return this.restaurantsService.update(
-      updateRestaurantInput.id,
-      updateRestaurantInput,
-    );
-  }
-
-  @Mutation(() => Restaurant)
-  removeRestaurant(@Args('id', { type: () => Int }) id: number) {
-    return this.restaurantsService.remove(id);
+  async getRestaurants(
+    @Args('isOpen', { type: () => Boolean, nullable: true }) isOpen?: boolean,
+    @Args('minRating', { type: () => Float, nullable: true })
+    minRating?: number,
+    @Args('maxDistance', { type: () => Float, nullable: true })
+    maxDistance?: number,
+    @Args('userLatitude', { type: () => Float, nullable: true })
+    userLatitude?: number,
+    @Args('userLongitude', { type: () => Float, nullable: true })
+    userLongitude?: number,
+  ): Promise<Restaurant[]> {
+    return this.restaurantService.getRestaurants({
+      isOpen,
+      minRating,
+      maxDistance,
+      userLatitude,
+      userLongitude,
+    });
   }
 }

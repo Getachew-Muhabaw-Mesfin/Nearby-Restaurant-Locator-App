@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { RestaurantsService } from './restaurants.service';
-import { RestaurantsResolver } from './restaurants.resolver';
+import { RestaurantService } from './restaurants.service';
+import { RestaurantResolver } from './restaurants.resolver';
 
 @Module({
-  providers: [RestaurantsResolver, RestaurantsService],
+  providers: [RestaurantResolver, RestaurantService],
 })
 export class RestaurantsModule {}
