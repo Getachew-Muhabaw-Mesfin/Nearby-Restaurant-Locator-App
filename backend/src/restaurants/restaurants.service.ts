@@ -11,6 +11,9 @@ interface GetRestaurantsFilter {
   maxDistance?: number;
   userLatitude?: number;
   userLongitude?: number;
+  search?: string;
+  page?: number;
+  pageSize?: number;
 }
 
 @Injectable()
@@ -46,6 +49,9 @@ export class RestaurantService {
     maxDistance,
     userLatitude,
     userLongitude,
+    search,
+    page = 1,
+    pageSize = 10,
   }: GetRestaurantsFilter): Promise<Restaurant[]> {
     let query = this.restaurantRepository.createQueryBuilder('restaurant');
 
@@ -57,8 +63,15 @@ export class RestaurantService {
       query = query.andWhere('restaurant.rating >= :minRating', { minRating });
     }
 
+    if (search) {
+      query = query.andWhere(
+        'restaurant.name ILIKE :search OR restaurant.address ILIKE :search',
+        { search: `%${search}%` },
+      );
+    }
+
     if (maxDistance && userLatitude && userLongitude) {
-      const radius = 6371; // Earth radius in kilometers
+      const radius = 6371;
       query = query
         .addSelect(
           `(${radius} * acos(cos(radians(:userLatitude)) * cos(radians(restaurant.latitude)) * cos(radians(restaurant.longitude) - radians(:userLongitude)) + sin(radians(:userLatitude)) * sin(radians(restaurant.latitude))))`,
@@ -69,6 +82,7 @@ export class RestaurantService {
         .setParameters({ userLatitude, userLongitude });
     }
 
+    query = query.skip((page - 1) * pageSize).take(pageSize);
     return query.getMany();
   }
 }

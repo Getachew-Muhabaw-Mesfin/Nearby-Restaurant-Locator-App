@@ -41,6 +41,11 @@ export class RestaurantResolver {
     userLatitude?: number,
     @Args('userLongitude', { type: () => Float, nullable: true })
     userLongitude?: number,
+    @Args('search', { type: () => String, nullable: true }) search?: string,
+    @Args('page', { type: () => Int, nullable: true, defaultValue: 1 })
+    page: number = 1,
+    @Args('pageSize', { type: () => Int, nullable: true, defaultValue: 10 })
+    pageSize: number = 10,
   ): Promise<Restaurant[]> {
     return this.restaurantService.getRestaurants({
       isOpen,
@@ -48,6 +53,9 @@ export class RestaurantResolver {
       maxDistance,
       userLatitude,
       userLongitude,
+      search,
+      page,
+      pageSize,
     });
   }
 }

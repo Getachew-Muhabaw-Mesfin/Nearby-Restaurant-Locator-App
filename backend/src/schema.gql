@@ -29,7 +29,7 @@ type OpeningHours {
 }
 
 type Query {
-  restaurants(isOpen: Boolean, minRating: Float, maxDistance: Float, userLatitude: Float, userLongitude: Float): [Restaurant!]!
+  restaurants(isOpen: Boolean, minRating: Float, maxDistance: Float, userLatitude: Float, userLongitude: Float, search: String, page: Int = 1, pageSize: Int = 10): [Restaurant!]!
 }
 
 type Mutation {
@@ -65,13 +65,11 @@ input ServiceInput {
 
 input UpdateRestaurantInput {
   name: String
+  address: String
+  rating: Float
+  isOpen: Boolean
+  services: [ServiceInput!]
+  images: [String!]
   latitude: Float
   longitude: Float
-  address: String
-  openingHours: [OpeningHoursInput!]
-  isOpen: Boolean = false
-  rating: Float = 0
-  images: [String!]
-  services: [ServiceInput!]
-  id: ID!
 }
